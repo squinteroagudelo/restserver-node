@@ -3,7 +3,7 @@ const bcryptjs = require("bcryptjs");
 const User = require("../models/user.model");
 
 const getUsers = async(req = request, res = response) => {
-    const { perpage = 3, from = 0 } = req.query;
+    const { perpage = 15, from = 0 } = req.query;
     const query = { isActive: true };
 
     const [countUsers, users] = await Promise.all([
