@@ -18,8 +18,14 @@ const getUserById = async(id = "") => {
     if (!userExists) throw new Error(`User with id ${id} not found`);
 };
 
+const getUserByEmail = async(email = "") => {
+    const userExists = await User.findOne({ email });
+    if (!userExists) throw new Error(`User ${email} not found`);
+};
+
 module.exports = {
     isValidRole,
     duplicatedEmails,
     getUserById,
+    getUserByEmail,
 };

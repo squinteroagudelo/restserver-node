@@ -10,7 +10,7 @@ const getUsers = async(req = request, res = response) => {
         User.countDocuments(query),
         User.find(query)
         .skip(isNaN(Number(from)) ? 0 : Number(from))
-        .limit(isNaN(Number(perpage)) ? 3 : Number(perpage)),
+        .limit(isNaN(Number(perpage)) ? 15 : Number(perpage)),
     ]);
 
     res.json({ countUsers, users });
