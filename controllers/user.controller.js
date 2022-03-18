@@ -1,10 +1,14 @@
 const { request, response } = require("express");
 const bcryptjs = require("bcryptjs");
 const User = require("../models/user.model");
+const Category = require("../models/category.model");
 
 const getUsers = async(req = request, res = response) => {
     const { perpage = 15, from = 0 } = req.query;
     const query = { isActive: true };
+
+    const cat = new Category({ category: "world" });
+    await cat.save();
 
     const [countUsers, users] = await Promise.all([
         User.countDocuments(query),
@@ -48,14 +52,17 @@ const putUsers = async(req, res = response) => {
 const deleteUsers = async(req, res = response) => {
     const { id } = req.params;
 
+    const authenticatedUser = req.authenticatedUser;
+
     // Delete user
     // const userDeleted = await User.findByIdAndDelete(id);
 
     // Set isActive to false
-    const userDeleted = await User.findByIdAndUpdate(id, { isActive: false });
+    const deletedUser = await User.findByIdAndUpdate(id, { isActive: false });
 
     res.json({
-        msg: `User ${userDeleted.email} has been successfully deleted`,
+        msg: `User ${deletedUser.email} has been successfully deleted`,
+        authenticatedUser,
     });
 };
 

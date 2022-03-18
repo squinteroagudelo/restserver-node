@@ -12,7 +12,13 @@ const {
     duplicatedEmails,
     getUserById,
 } = require("../helpers/db-validators.helper");
-const { fieldsValidate } = require("../middlewares/fields-validate.middleware");
+
+const {
+    fieldsValidate,
+    validateJWT,
+    isAdminRole,
+    hasRole,
+} = require("../middlewares");
 
 const router = Router();
 
@@ -45,6 +51,9 @@ router.put(
 
 router.delete(
     "/:id", [
+        validateJWT,
+        // isAdminRole,
+        hasRole("ADMIN_ROLE", "SALES_ROLE"),
         check("id", "Id is invalid").isMongoId(),
         check("id").custom(getUserById),
         fieldsValidate,
